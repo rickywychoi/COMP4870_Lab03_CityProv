@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CityProv.Models
 {
@@ -17,5 +18,8 @@ namespace CityProv.Models
         [Display(Name="Province")]
         [Required(ErrorMessage="You must select {0}.")]
         public string ProvinceCode { get; set; }
+
+        [ForeignKey("ProvinceCode")]
+        public Province Province { get; set; }
     }
 }

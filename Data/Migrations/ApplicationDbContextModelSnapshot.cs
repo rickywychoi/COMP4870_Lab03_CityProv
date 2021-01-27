@@ -27,20 +27,19 @@ namespace CityProv.Data.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("CityName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Population")
                         .HasColumnType("int");
 
                     b.Property<string>("ProvinceCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProvinceCode1")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CityId");
 
-                    b.HasIndex("ProvinceCode1");
+                    b.HasIndex("ProvinceCode");
 
                     b.ToTable("City");
 
@@ -116,6 +115,7 @@ namespace CityProv.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProvinceName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProvinceCode");
@@ -342,9 +342,13 @@ namespace CityProv.Data.Migrations
 
             modelBuilder.Entity("CityProv.Models.City", b =>
                 {
-                    b.HasOne("CityProv.Models.Province", null)
+                    b.HasOne("CityProv.Models.Province", "Province")
                         .WithMany("Cities")
-                        .HasForeignKey("ProvinceCode1");
+                        .HasForeignKey("ProvinceCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Province");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
